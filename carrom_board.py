@@ -7,14 +7,14 @@ import time
 # Global variables for striker control
 striker_x = 0
 striker_y = -250  # Start in box 1 (bottom)
-mouse_x = 0
+mouse_x = 0  #Store the current mouse position
 mouse_y = 0
-can_strike = True
-striker_speed = 30.0
+can_strike = True #to check if the striker can be used
+striker_speed = 30.0 # controls the striker speed
 restart_button = {"x": 0, "y": 400, "width": 100, "height": 30}
 strike_time = 0  # Time when striker hits a coin
 return_delay = 5000  # 5 seconds in milliseconds
-dragging = False
+dragging = False #the mouse is dragging the striker indicator
 strike_power = 0
 
 # Add global variables for mouse handling
@@ -39,9 +39,9 @@ striker_boxes = {
 }
 
 # Physics variables
-striker_velocity_x = 0
+striker_velocity_x = 0 #Velocity of the striker in both directions.
 striker_velocity_y = 0
-friction = 0.98
+friction = 0.98  #Slows down the striker gradually after being hit
 minimum_velocity = 0.2
 
 # Define pocket positions (corners)
@@ -186,6 +186,7 @@ def check_set_complete():
         return True
     return False
 
+# striker movement at the end of each turn
 def move_striker_to_next_box():
     global striker_x, striker_y, current_box, CURRENT_TEAM, VALID_STRIKE
     
@@ -785,7 +786,7 @@ def cleanup():
     coins.clear()
     # Reset game state
     init_game_state()
-
+#midpoint circle
 def draw_line(x1, y1, x2, y2):
     dx = abs(x2 - x1)
     dy = abs(y2 - y1)
@@ -862,11 +863,20 @@ def draw_circle(center_x, center_y, radius, filled=False):
         glEnd()
 
 def draw_rectangle(x, y, width, height):
-    glBegin(GL_QUADS)
+    # Draw four lines to make a rectangle
+    glBegin(GL_LINES)
+    # Bottom line
     glVertex2f(x, y)
     glVertex2f(x + width, y)
+    # Right line
+    glVertex2f(x + width, y)
+    glVertex2f(x + width, y + height)
+    # Top line
     glVertex2f(x + width, y + height)
     glVertex2f(x, y + height)
+    # Left line
+    glVertex2f(x, y + height)
+    glVertex2f(x, y)
     glEnd()
 
 def fill_board_color(x1, y1, x2, y2):
